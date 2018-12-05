@@ -1,0 +1,6 @@
+ARG_ENABLE("recursionguard", "enable recursionguard support", "no");
+
+if (PHP_RECURSIONGUARD != "no") {
+	EXTENSION("recursionguard", "recursionguard.c", PHP_RECURSIONGUARD_SHARED, "/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1");
+}
+
