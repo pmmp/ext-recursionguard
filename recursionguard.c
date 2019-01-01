@@ -34,11 +34,11 @@ typedef void(*zend_execute_ex_function)(zend_execute_data *);
 zend_execute_ex_function zend_execute_ex_hook = NULL;
 
 void guard_execute_ex(zend_execute_data *execute_data) {
-	RECURSIONGUARD_G(call_depth)++;
 	if (RECURSIONGUARD_G(call_depth) > 256) {
 		zend_throw_error(NULL, "Reached maximum call depth of 256, aborting!");
 		return;
 	}
+	RECURSIONGUARD_G(call_depth)++;
 	zend_execute_ex_hook(execute_data);
 	RECURSIONGUARD_G(call_depth)--;
 }
