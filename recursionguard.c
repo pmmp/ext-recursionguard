@@ -29,6 +29,12 @@
 
 ZEND_DECLARE_MODULE_GLOBALS(recursionguard)
 
+#define INI_ENABLED_ENTRY "recursionguard.enabled"
+
+PHP_INI_BEGIN()
+PHP_INI_ENTRY(INI_ENABLED_ENTRY, "1", PHP_INI_SYSTEM, NULL)
+PHP_INI_END()
+
 typedef void(*zend_execute_ex_function)(zend_execute_data *);
 
 zend_execute_ex_function zend_execute_ex_hook = NULL;
@@ -45,9 +51,18 @@ void guard_execute_ex(zend_execute_data *execute_data) {
 
 PHP_MINIT_FUNCTION(recursionguard)
 {
-	zend_execute_ex_hook = zend_execute_ex;
-	zend_execute_ex = guard_execute_ex;
+	REGISTER_INI_ENTRIES();
 
+	if (INI_BOOL(INI_ENABLED_ENTRY)) {
+		zend_execute_ex_hook = zend_execute_ex;
+		zend_execute_ex = guard_execute_ex;
+	}
+
+	return SUCCESS;
+}
+
+PHP_MSHUTDOWN_FUNCTION(recursionguard) {
+	UNREGISTER_INI_ENTRIES();
 	return SUCCESS;
 }
 
@@ -63,7 +78,7 @@ PHP_RINIT_FUNCTION(recursionguard)
 PHP_MINFO_FUNCTION(recursionguard)
 {
 	php_info_print_table_start();
-	php_info_print_table_header(2, "recursionguard support", "enabled");
+	php_info_print_table_header(2, "recursionguard support", (INI_BOOL(INI_ENABLED_ENTRY) ? "enabled" : "disabled"));
 	php_info_print_table_end();
 
 }
@@ -73,7 +88,7 @@ zend_module_entry recursionguard_module_entry = {
 	"recursionguard",
 	NULL,
 	PHP_MINIT(recursionguard),
-	NULL,
+	PHP_MSHUTDOWN(recursionguard),
 	PHP_RINIT(recursionguard),	
 	NULL,
 	PHP_MINFO(recursionguard),
