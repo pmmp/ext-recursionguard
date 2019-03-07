@@ -37,7 +37,7 @@ PHP_INI_END()
 
 typedef void(*zend_execute_ex_function)(zend_execute_data *);
 
-zend_execute_ex_function zend_execute_ex_hook = NULL;
+static zend_execute_ex_function zend_execute_ex_hook = NULL;
 
 void guard_execute_ex(zend_execute_data *execute_data) {
 	if (RECURSIONGUARD_G(call_depth) > 256) {
