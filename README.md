@@ -1,4 +1,6 @@
 # ext-recursionguard
+![CI](https://github.com/pmmp/ext-recursionguard/workflows/CI/badge.svg)
+
 Lightweight PHP extension to hard-cap function call depth.
 
 ## Features
