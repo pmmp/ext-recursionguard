@@ -12,4 +12,4 @@ This extension will throw an `Error` if the function call stack reaches a depth 
 ## Motivation
 Recursion errors can be difficult to debug because they cause PHP to crash without any stack trace when something overrides `zend_execute_ex`. Therefore, it's desirable to have this barf at a hard limit instead of segfaulting without apparent reason.
 
-However, the only way to do this before now was the `xdebug` extension, which causes huge performance degradation and as such is unsuitable for production. This extension keeps to the point, causing a hit of only 10% extra function call overhead, versus `xdebug`'s 2000+% overhead. This additional overhead becomes insignicant outside of synthetic benchmarks.
+However, the only way to do this before now was the `xdebug` extension, which causes huge performance degradation and as such is unsuitable for production. This extension keeps to the point, causing a hit of only 10% extra function call overhead, versus `xdebug`'s 2000+% overhead. This additional overhead becomes insignificant outside of synthetic benchmarks.
